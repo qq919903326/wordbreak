@@ -1,11 +1,4 @@
 package com.wordbreak.core.api;
-
-/**
- * @author 会跳舞的机器人
- * @version 1.0
- * @Description Controller层返回的统一结果对象
- * @date 2015年8月31日 下午11:57:43
- */
 public class ApiResult {
 
     /**

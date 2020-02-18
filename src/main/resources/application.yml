@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: wordbreak
+server:
+  undertow:
+    io-threads: 4
+    worker-threads: 20
+    buffer-size: 1024
+    direct-buffers: true
+  port: 9999
+  tomcat:
+    basedir: ./temp
+logging:
+  level:
+    root: info

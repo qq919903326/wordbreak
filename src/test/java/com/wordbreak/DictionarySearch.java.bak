@@ -1,25 +1,55 @@
 package com.wordbreak;
 
+import com.wordbreak.entity.Dictionary;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public class DictionarySearch {
 
-//    static String dictionary[] = { "i", "like", "sam", "sung", "samsung", "mobile", "ice", "cream", "man go"};
-    static String dictionary[] = { "i", "like", "sam", "sung", "samsung","mobile", "ice","cream", "icecream", "man", "go", "mango"};
+//    static String dictionary[] = { "a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaaa"};
+    static String dictionary[] = { "abc","i", "like", "sam", "sung", "samsung","mobile", "ice","cream", "icecream", "man", "go", "mango"};
 
     @Test
     public void test(){
         String word = "ilikesamsungmobile";
+//        String word = "aaaaaaaaaaaaaaaaaaa";
 //        String word = "ilikeicecreamandmango";
 //        String word = "ilikeicecreammango";
         search(word);
     }
-    private static void search(String word) {
-        dictionarySearchUtil(word, "");
+
+    public static void main(String[] args) {
+        String word = "ilikesamsungmobile";
+        search(word).stream().forEach(System.out::println);
     }
+    private static List search(String word) {
+        return dictionarySearchUtil(word);
+    }
+
+    public static List<String> dictionarySearchUtil(String s) {
+        LinkedList<String>[] dp = new LinkedList[s.length() + 1];
+        LinkedList<String> initial = new LinkedList(){{add("");}};
+        dp[0] = initial;
+        for (int i = 1; i <= s.length(); i++) {
+            LinkedList<String> list = new LinkedList<>();
+            for (int j = 0; j < i; j++) {
+                String prefix = s.substring(j, i);
+                Optional<String> re = dictionaryContains(prefix);
+                if (dp[j].size() > 0 && re.isPresent()) {
+                    for (String l : dp[j]) {
+                        list.add(l + (l.equals("") ? "" : " ") + re.get());
+                    }
+                }
+            }
+            dp[i] = list;
+        }
+        return dp[s.length()];
+    }
+
     private static void dictionarySearchUtil(String word, String result) {
         int length = word.length();
         for (int i = 1; i <= length; i++) {
