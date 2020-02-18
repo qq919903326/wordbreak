@@ -18,6 +18,6 @@ public class DictionarySearchControllerTest {
     @Test
     public void search(){
         String word = "ilikeicecreaandmmango";
-        Assert.assertEquals(ApiResultCodeMsg.SUCCESS.getCode(), wordController.search(word).getCode());
+        Assert.assertEquals(ApiResultCodeMsg.SUCCESS.getCode(), wordController.searchSystemStore(word).getCode());
     }
 }
