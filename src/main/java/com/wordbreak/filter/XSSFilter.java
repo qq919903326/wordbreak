@@ -1,7 +1,7 @@
 package com.wordbreak.filter;
 
-import com.wordbreak.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,13 +27,12 @@ public class XSSFilter implements Filter {
             throws IOException, ServletException {
         log.info("==进入xss过滤器===");
         String xssPatterns = filterConfig.getInitParameter("xss-patterns");
-        xssPatterns = StrUtil.formatNull(xssPatterns);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        String queryString = StrUtil.formatNull(req.getQueryString());
+        String queryString = null == req.getQueryString() || "null".equals(req.getQueryString()) ? "" : req.getQueryString();
         queryString = java.net.URLDecoder.decode(queryString);
         // log.info("检测到参数==== "+queryString);
-        if (xssPatterns.trim().length() > 0) {
+        if (StringUtils.isNotBlank(xssPatterns)) {
             String[] patterns = xssPatterns.split(";");
             for (int i = 0; i < patterns.length; i++) {
                 // log.info("==patterns[i]==== "+patterns[i]);

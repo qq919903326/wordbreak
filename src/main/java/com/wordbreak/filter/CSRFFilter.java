@@ -1,7 +1,7 @@
 package com.wordbreak.filter;
 
-import com.wordbreak.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +25,9 @@ public class CSRFFilter implements Filter {
         String referer = req.getHeader("Referer");
         // 系统配置的referer头信息
         String myReferer = filterConfig.getInitParameter("referer");
-        myReferer = StrUtil.formatNull(myReferer);// 判空
         int count = 0;
-        if (myReferer.trim().length() > 0) {
+        // 判空
+        if (StringUtils.isNotBlank(myReferer)) {
             String[] myReferers = myReferer.split(";");
             for (int i = 0; i < myReferers.length; i++) {
                 if (referer != null && !referer.trim().startsWith(myReferers[i])) {
