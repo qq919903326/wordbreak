@@ -6,6 +6,7 @@ import com.wordbreak.controller.WordController;
 import com.wordbreak.core.api.ApiResult;
 import com.wordbreak.core.api.ApiResultCodeMsg;
 import com.wordbreak.core.api.ApiResultGenerator;
+import com.wordbreak.entity.Dictionary;
 import com.wordbreak.repositories.Storage;
 import com.wordbreak.run.CompanyApplication;
 import com.wordbreak.service.DictionaryService;
@@ -22,11 +23,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({WordController.class,ApiResult.class,ApiResultGenerator.class})
+@PrepareForTest({WordController.class,ApiResult.class,ApiResultGenerator.class,Storage.class})
 @PowerMockIgnore({"java.management.*","java.script.*"})
 public class WordControllerTest {
     @Mock
@@ -53,14 +57,17 @@ public class WordControllerTest {
     }
     @Test
     public void testSearchUserStore(){
+        //init user store
+        /**
+         * [{"dict":"a"},{"dict":"ab"},{"dict":"ert"},{"dict":"qwer"}]
+         */
+        Dictionary[] dictionaries = {new Dictionary("a"),new Dictionary("ab"),new Dictionary("ert"),new Dictionary("qwer")};
+        Storage.USER_DICTIONARIES.addAll(Arrays.asList(dictionaries));
         //create test param
-        String word = "ilikeicecreamandmango";
+        String word = "aqweraab";
         //create mock return data model
         List<String> list = Lists.newArrayList();
-        list.add("i like ice cream and mango");
-        list.add("i like ice cream and man go");
-        list.add("i like icecream and mango");
-        list.add("i like icecream and man go");
+        list.add("a qwer a ab");
         ApiResult apiResult = ApiResultGenerator.success(list);
         //mock
         PowerMockito.when(dictionaryService.searchByUser(word)).thenReturn(apiResult);
@@ -69,10 +76,17 @@ public class WordControllerTest {
         //verify
         Assert.assertEquals(apiResult.getCode(), result.getCode());
     }
+
     @Test
     public void testSearchSystemAndUserStore(){
+        //init user store
+        /**
+         * [{"dict":"a"},{"dict":"ab"},{"dict":"ert"},{"dict":"qwer"}]
+         */
+        Dictionary[] dictionaries = {new Dictionary("a"),new Dictionary("ab"),new Dictionary("ert"),new Dictionary("qwer")};
+        Storage.USER_DICTIONARIES.addAll(Arrays.asList(dictionaries));
         //create test param
-        String word = "ilikeicecreamandmango";
+        String word = "aqweraabilikeicecreamandmango";
         //create mock return data model
         List<String> list = Lists.newArrayList();
         list.add("i like ice cream and mango");
