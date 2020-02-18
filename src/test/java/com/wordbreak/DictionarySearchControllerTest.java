@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CompanyApplication.class)
-public class DictionarySearchTest {
+public class DictionarySearchControllerTest {
     @Autowired
     WordController wordController;
     @Test

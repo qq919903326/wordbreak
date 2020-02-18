@@ -30,8 +30,8 @@ public class ApiResultGenerator {
                 ApiResultCodeMsg.FAIL.getMsg(), null);
     }
 
-    public static ApiResult error(ApiResultCodeMsg codeMsg) {
-        return generate(codeMsg.getCode(), codeMsg.getMsg(), null);
+    public static ApiResult error(ApiResultCodeMsg codeMsg,Object data) {
+        return generate(codeMsg.getCode(), codeMsg.getMsg(), data);
     }
 
     /**
