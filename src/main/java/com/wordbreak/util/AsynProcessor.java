@@ -30,23 +30,4 @@ public class AsynProcessor {
 
 		exec.execute(command);
 	}
-
-	public static void asynProcess(Runnable command) {
-
-		AsynProcessor processor = AsynProcessor.getInstance();
-		processor.process(command);
-	}
-	private Thread timeThread;
-	public void processSleep(Long time){
-		if(timeThread == null){
-			timeThread = new Thread();
-		}
-		if(!timeThread.isAlive()){
-			try {
-				timeThread.sleep(time);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }
