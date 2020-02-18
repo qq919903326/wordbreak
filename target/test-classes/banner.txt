@@ -1,3 +1,0 @@
-﻿
-
- Spring boot version: ${spring-boot.version}
