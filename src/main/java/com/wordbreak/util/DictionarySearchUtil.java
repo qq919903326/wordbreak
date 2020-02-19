@@ -10,8 +10,11 @@ import java.util.stream.Stream;
 
 public class DictionarySearchUtil {
     //dp查找
-    public static List<String> dpSearch(String word,List<Dictionary>... list) {
-       return dictionarySearchUtil(word,list);
+    public static Optional<List<String>> dpSearch(String word,List<Dictionary>... list) {
+       List<String> result = dictionarySearchUtil(word,list);
+       if(result.isEmpty())
+           return Optional.empty();
+       return Optional.of(result);
     }
     //dp算法
     public static List<String> dictionarySearchUtil(String s,List<Dictionary>... dictionaries) {

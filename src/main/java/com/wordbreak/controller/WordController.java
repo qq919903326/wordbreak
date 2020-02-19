@@ -2,6 +2,8 @@ package com.wordbreak.controller;
 
 
 import com.wordbreak.core.api.ApiResult;
+import com.wordbreak.core.api.ApiResultCodeMsg;
+import com.wordbreak.core.api.ApiResultGenerator;
 import com.wordbreak.entity.Dictionary;
 import com.wordbreak.service.DictionaryService;
 import com.wordbreak.util.GsonProcessor;
@@ -11,7 +13,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hwh
@@ -34,7 +39,11 @@ public class WordController {
      */
     @GetMapping("/searchSystemStore/{str}")
     public ApiResult searchSystemStore(@PathVariable String str){
-        return dictionaryService.search(str);
+        Optional<List<String>> optional = dictionaryService.search(str);
+        if(optional.isPresent()){
+            return ApiResultGenerator.success(optional.get());
+        }
+        return ApiResultGenerator.error(ApiResultCodeMsg.NOT_FOUND,new ArrayList<>());
     }
 
     /**
@@ -45,7 +54,11 @@ public class WordController {
      */
     @GetMapping("/searchUserStore/{str}")
     public ApiResult searchUserStore(@PathVariable String str){
-        return dictionaryService.searchByUser(str);
+        Optional<List<String>> optional =  dictionaryService.searchByUser(str);
+        if(optional.isPresent()){
+            return ApiResultGenerator.success(optional.get());
+        }
+        return ApiResultGenerator.error(ApiResultCodeMsg.NOT_FOUND,new ArrayList<>());
     }
 
     /**
@@ -56,7 +69,11 @@ public class WordController {
      */
     @GetMapping("/searchSystemAndUserStore/{str}")
     public ApiResult searchSystemAndUserStore(@PathVariable String str){
-        return dictionaryService.searchByUserAndSystem(str);
+        Optional<List<String>> optional = dictionaryService.searchByUserAndSystem(str);
+        if(optional.isPresent()){
+            return ApiResultGenerator.success(optional.get());
+        }
+        return ApiResultGenerator.error(ApiResultCodeMsg.NOT_FOUND,new ArrayList<>());
     }
 
     /**
@@ -70,6 +87,7 @@ public class WordController {
     public ApiResult save(@RequestBody String str){
         //TODO 检验格式
         Dictionary[] dtos = GsonProcessor.getInstance().fromJson(str,Dictionary[].class);
-        return dictionaryService.saveUserStore(Arrays.asList(dtos));
+        dictionaryService.saveUserStore(Arrays.asList(dtos));
+        return ApiResultGenerator.success();
     }
 }
