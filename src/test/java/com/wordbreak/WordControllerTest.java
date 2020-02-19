@@ -54,4 +54,54 @@ public class WordControllerTest {
         //verify
         Assert.assertEquals(apiResult.getCode(), result.getCode());
     }
+    @Test
+    public void testSearchUserStore(){
+        //init user store
+        /**
+         * [{"dict":"a"},{"dict":"ab"},{"dict":"ert"},{"dict":"qwer"}]
+         */
+        Dictionary[] dictionaries = {new Dictionary("a"),new Dictionary("ab"),new Dictionary("ert"),new Dictionary("qwer")};
+        Storage.USER_DICTIONARIES.addAll(Arrays.asList(dictionaries));
+        //create test param
+        String word = "aqweraab";
+        //create mock return data model
+        List<String> list = Lists.newArrayList();
+        list.add("a qwer a ab");
+
+        Optional<List<String>> optional = Optional.of(list);
+        ApiResult apiResult = ApiResultGenerator.success(list);
+        //mock
+        PowerMockito.when(dictionaryService.searchByUser(word)).thenReturn(optional);
+        //execute
+        ApiResult result = wordController.searchUserStore(word);
+        //verify
+        Assert.assertEquals(apiResult.getCode(), result.getCode());
+    }
+
+    @Test
+    public void testSearchSystemAndUserStore(){
+        //init user store
+        /**
+         * [{"dict":"a"},{"dict":"ab"},{"dict":"ert"},{"dict":"qwer"}]
+         */
+        Dictionary[] dictionaries = {new Dictionary("a"),new Dictionary("ab"),new Dictionary("ert"),new Dictionary("qwer")};
+        Storage.USER_DICTIONARIES.addAll(Arrays.asList(dictionaries));
+        //create test param
+        String word = "aqweraabilikeicecreamandmango";
+        //create mock return data model
+        List<String> list = Lists.newArrayList();
+        list.add("a qwer a ab i like ice cream and mango");
+        list.add("a qwer a ab i like ice cream and man go");
+        list.add("a qwer a ab i like icecream and mango");
+        list.add("a qwer a ab i like icecream and man go");
+
+        Optional<List<String>> optional = Optional.of(list);
+        ApiResult apiResult = ApiResultGenerator.success(list);
+        //mock
+        PowerMockito.when(dictionaryService.searchByUserAndSystem(word)).thenReturn(optional);
+        //execute
+        ApiResult result = wordController.searchSystemAndUserStore(word);
+        //verify
+        Assert.assertEquals(apiResult.getCode(), result.getCode());
+    }
 }
