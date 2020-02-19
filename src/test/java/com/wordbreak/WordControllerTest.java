@@ -89,10 +89,10 @@ public class WordControllerTest {
         String word = "aqweraabilikeicecreamandmango";
         //create mock return data model
         List<String> list = Lists.newArrayList();
-        list.add("i like ice cream and mango");
-        list.add("i like ice cream and man go");
-        list.add("i like icecream and mango");
-        list.add("i like icecream and man go");
+        list.add("a qwer a ab i like ice cream and mango");
+        list.add("a qwer a ab i like ice cream and man go");
+        list.add("a qwer a ab i like icecream and mango");
+        list.add("a qwer a ab i like icecream and man go");
         ApiResult apiResult = ApiResultGenerator.success(list);
         //mock
         PowerMockito.when(dictionaryService.searchByUserAndSystem(word)).thenReturn(apiResult);
