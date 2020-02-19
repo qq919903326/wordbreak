@@ -13,29 +13,6 @@ public class DictionarySearchUtil {
     public static List<String> dpSearch(String word,List<Dictionary>... list) {
        return dictionarySearchUtil(word,list);
     }
-    //递归查找
-    @Deprecated
-    public static String recursiveSearch(String word) {
-       return dictionarySearchUtil(word, "");
-    }
-    //递归算法
-    @Deprecated
-    public static String dictionarySearchUtil(String word, String result) {
-        int length = word.length();
-        for (int i = 1; i <= length; i++) {
-            String prefix = word.substring(0, i);
-            Optional<Dictionary> re = dictionaryContains(prefix,Storage.DICTIONARIES);
-            if (re.isPresent()) {
-                if (i == length) {
-                    result += re.get().getDict();
-                    return result;
-                }
-                String lestword = word.substring(i, length);
-                dictionarySearchUtil(lestword, result + prefix + " ");
-            }
-        }
-        return "-1";
-    }
     //dp算法
     public static List<String> dictionarySearchUtil(String s,List<Dictionary>... dictionaries) {
         LinkedList<String>[] dp = new LinkedList[s.length() + 1];
